@@ -3,10 +3,12 @@ eip:
 title: ERC-20: Pre-initialization Function for Gas Savings
 author: German Maria Abal Bazzano (@ariutokintumi)
 discussions-to: https://github.com/ariutokintumi/ERC-20-Pre-initialization
-status: Draft
 type: Standards Track
+status: Draft
 category: ERC
+status: Pre-Draft
 created: 2025-07-17
+updated: 2025-07-17
 requires: ERC-20
 ---
 
