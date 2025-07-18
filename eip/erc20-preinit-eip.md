@@ -1,5 +1,5 @@
 ---
-eip: <to-be-assigned>
+eip: 
 title: ERC-20: Pre-initialization Function for Gas Savings
 author: German Maria Abal Bazzano (@ariutokintumi)
 discussions-to: https://github.com/ariutokintumi/ERC-20-Pre-initialization
@@ -30,6 +30,7 @@ Add the following **optional function** to any ERC-20 contract:
 /// @notice Pre-initialize an address' balance storage slot to 0 if not set.
 /// @param user The address to pre-initialize
 function preInitializeAddress(address user) external;
+```
 
 ## Behavior:
 
