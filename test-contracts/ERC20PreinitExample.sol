@@ -1,16 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+/// @title ERC20 with bytes32 balance storage and pre-initialization
 /// @title ERC-20 with Pre-initialization (EIP draft) - Author: @ariutokintumi
-contract ERC20PreinitMock {
+
+contract ERC20PreinitBytes32 {
     string public name = "PreinitToken";
     string public symbol = "PINIT";
     uint8 public decimals = 18;
     uint256 public totalSupply;
     address public owner;
 
-    mapping(address => uint256) public balanceOf;
+    // Store as bytes32 for magic value support
+    mapping(address => bytes32) private _balanceBytes32;
     mapping(address => mapping(address => uint256)) public allowance;
+
+    // Magic value (could be any rare pattern)
+    bytes32 constant MAGIC = keccak256("preinit");
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Not owner");
@@ -21,28 +27,35 @@ contract ERC20PreinitMock {
         owner = msg.sender;
     }
 
-    /// @notice Pre-initialize an address' balance storage slot to 0 if not yet set (EIP function)
-    /// @param user The address to pre-initialize
+    // Pre-initialize with magic value
     function preInitializeAddress(address user) external {
-        // Only write if not set (avoid extra SSTORE for already-initialized)
-        if (balanceOf[user] == 0) {
-            // This will cost 20,000 gas if user slot is empty, 5,000 if already set
-            balanceOf[user] = 0;
+        if (_balanceBytes32[user] == bytes32(0)) {
+            _balanceBytes32[user] = MAGIC;
         }
     }
 
-    /// @notice Mint new tokens (for testing/demo). Only owner can mint.
+    // Read ERC-20 compatible balance
+    function balanceOf(address user) public view returns (uint256) {
+        bytes32 val = _balanceBytes32[user];
+        // If magic, treat as zero for external view
+        if (val == MAGIC) return 0;
+        return uint256(val);
+    }
+
     function mint(address to, uint256 amount) external onlyOwner {
+        uint256 current = balanceOf(to);
+        // Overwrite magic with actual value, or just add if already numeric
+        _balanceBytes32[to] = bytes32(current + amount);
         totalSupply += amount;
-        balanceOf[to] += amount;
         emit Transfer(address(0), to, amount);
     }
 
     function transfer(address to, uint256 value) external returns (bool) {
-        require(balanceOf[msg.sender] >= value, "Insufficient");
+        uint256 senderBal = balanceOf(msg.sender);
+        require(senderBal >= value, "Insufficient");
         unchecked {
-            balanceOf[msg.sender] -= value;
-            balanceOf[to] += value;
+            _balanceBytes32[msg.sender] = bytes32(senderBal - value);
+            _balanceBytes32[to] = bytes32(balanceOf(to) + value);
         }
         emit Transfer(msg.sender, to, value);
         return true;
@@ -55,11 +68,12 @@ contract ERC20PreinitMock {
     }
 
     function transferFrom(address from, address to, uint256 value) external returns (bool) {
-        require(balanceOf[from] >= value, "Insufficient");
+        uint256 fromBal = balanceOf(from);
+        require(fromBal >= value, "Insufficient");
         require(allowance[from][msg.sender] >= value, "Allowance");
         unchecked {
-            balanceOf[from] -= value;
-            balanceOf[to] += value;
+            _balanceBytes32[from] = bytes32(fromBal - value);
+            _balanceBytes32[to] = bytes32(balanceOf(to) + value);
             allowance[from][msg.sender] -= value;
         }
         emit Transfer(from, to, value);
