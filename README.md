@@ -59,13 +59,12 @@ Test ETH savings with the live web tool:
 German Maria Abal Bazzano  
 - [X: @ariutokintumi](https://x.com/ariutokintumi)
 - [Telegram: @llamame](https://t.me/llamame)
-- [GitHub: ariutokintumi](https://github.com/ariutokintumi)
 
 ---
 
 ## License
 
-MIT (unless otherwise specified in specific files).
+MIT
 
 ---
 
