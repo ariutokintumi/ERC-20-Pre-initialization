@@ -1,9 +1,3 @@
-
----
-
-## `eip/rationale.md` — Extended Rationale
-
-```markdown
 # Rationale: ERC-20 Pre-initialization Function
 
 ## Why This EIP?
