@@ -33,7 +33,7 @@ Test ETH savings with the live web tool:
 - .gitattributes — Attributes
 - eip/
     - erc20-preinit-eip.md — EIP draft
-    - rationale.md — Extended rationale (optional)
+    - rationale.md — Extended rationale
 - tooling/
     - ERC-20 Pre-initialization ETH Savings Calculator.html — Interactive calculator
     - preinit.py — Python: Address initialization
