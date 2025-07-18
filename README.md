@@ -30,7 +30,7 @@ Test ETH savings with the live web tool:
 
 - README.md — Project overview, setup, and table of contents
 - LICENSE — License information
-- .gitattributes — Attributes
+- .gitattributes — Ensures consistent line endings across all text files in repo
 - eip/
     - erc20-preinit-eip.md — EIP draft
     - rationale.md — Extended rationale
