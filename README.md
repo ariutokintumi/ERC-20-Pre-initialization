@@ -27,19 +27,19 @@ Test ETH savings with the live web tool:
 
 ## Folder Structure
 
-ERC-20 Pre-initialization EIP/
-├── README.md                        # Project overview, setup instructions, and table of contents
-├── LICENSE                          # License information
-├── .gitattributes                   # Attributes
-├── eip/
-│   ├── erc20-preinit-eip.md         # EIP draft
-│   └── rationale.md                 # Optional: Extended rationale
-├── tooling/
-│   ├── ERC-20 Pre-initialization ETH Savings Calculator.html   # Interactive calculator (HTML/CSS/js)
-│   ├── preinit.py                   # Python: Address initialization
-│   └── gas_measurement.py           # Python: transfer gas measurement scripts
-├── test-contracts/
-│   └── ERC20PreinitExample.sol      # Solidity contract with pre-init logic
+
+- README.md — Project overview, setup, and table of contents
+- LICENSE — License information
+- .gitattributes — Attributes
+- eip/
+    - erc20-preinit-eip.md — EIP draft
+    - rationale.md — Extended rationale (optional)
+- tooling/
+    - ERC-20 Pre-initialization ETH Savings Calculator.html — Interactive calculator
+    - preinit.py — Python: Address initialization
+    - gas_measurement.py — Python: transfer gas measurement scripts
+- test-contracts/
+    - ERC20PreinitExample.sol — Solidity contract with pre-init logic
 
 
 
