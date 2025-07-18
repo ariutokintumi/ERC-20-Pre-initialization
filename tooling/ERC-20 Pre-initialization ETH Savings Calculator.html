@@ -1,0 +1,423 @@
+<!--
+  ERC-20 Pre-initialization ETH Savings Calculator
+  Author: German Maria Abal Bazzano
+  X: @ariutokintumi | Telegram: @llamame
+  Github: https://github.com/ariutokintumi
+  Created: 2025-07-17
+  For EIP Proposal Draft & Public Analysis
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ERC-20 Pre-initialization ETH Savings Calculator by ariutokintumi</title>
+  <meta name="author" content="German Maria Abal Bazzano">
+  <meta name="date" content="2025-07-17">
+  <meta name="description" content="EIP Proposal Analysis Tool for ERC-20 Pre-initialization Gas Savings. Author: ariutokintumi">
+  <meta name="keywords" content="EIP, ERC-20, Ethereum, Gas, Proposal, @ariutokintumi, web3, calculator">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      font-family: "Inter", system-ui, Arial, sans-serif;
+      background: #fafbfc;
+      color: #222;
+      margin: 0; padding: 0;
+    }
+    main {
+      max-width: 920px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 2px 32px #0001;
+      padding: 2.3rem 2rem 2rem 2rem;
+      display: flex;
+      flex-direction: row;
+      gap: 2.2em;
+    }
+    .form-section, .results-section {
+      flex: 1;
+      min-width: 285px;
+    }
+    h1 {
+      font-size: 2rem;
+      color: #4157c7;
+      margin-bottom: 0.25em;
+      font-weight: 700;
+    }
+    label {
+      font-weight: 500;
+      margin: 1.2em 0 0.4em;
+      display: block;
+      color: #555;
+    }
+    input[type="number"] {
+      padding: 0.45em 0.8em;
+      border: 1.5px solid #ccd;
+      border-radius: 8px;
+      font-size: 1.1em;
+      width: 90%;
+      margin-bottom: 1em;
+      background: #f7fafd;
+      transition: border .2s;
+    }
+    input[type="number"]:focus {
+      border-color: #4157c7;
+      outline: none;
+    }
+    button {
+      margin-top: 1.5em;
+      background: #4157c7;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.08em;
+      padding: 0.7em 2em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #4157c73d;
+      transition: background .2s;
+    }
+    button:hover {
+      background: #3a47aa;
+    }
+    .results {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1em;
+      margin-top: 0.5em;
+    }
+    .card {
+      background: #f8fafd;
+      border-radius: 14px;
+      box-shadow: 0 2px 6px #4157c71a;
+      padding: 1.2em 1.4em 1em 1.4em;
+      margin: 0;
+      border-left: 5px solid #4157c7;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4em;
+    }
+    .card b {
+      color: #4157c7;
+    }
+    .savings-card {
+      background: #e7faed;
+      border-left: 6px solid #21b66f;
+      box-shadow: 0 2px 10px #21b66f11;
+    }
+    .savings-value {
+      color: #21b66f;
+      font-size: 1.1em;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+    }
+    .assumptions {
+      font-size: 0.97em;
+      color: #666;
+      background: #f1f4f8;
+      padding: 1em 1.3em;
+      margin-top: 1.8em;
+      border-radius: 11px;
+      border-left: 5px solid #4157c7;
+      box-shadow: 0 1px 3px #4157c711;
+    }
+    .subtitle {
+      color: #888;
+      margin-bottom: 2em;
+      font-size: 1.08em;
+      font-weight: 500;
+    }
+    @media (max-width: 1000px) {
+      main {
+        flex-direction: column;
+        padding: 1.2em;
+        gap: 0.6em;
+      }
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.3rem;}
+      .card, .assumptions { padding: 1em;}
+    }
+    .chart-container {
+      background: #fff;
+      border-radius: 15px;
+      margin: 36px auto 0 auto;
+      padding: 1.6em 1em 1.8em 1em;
+      max-width: 890px;
+      box-shadow: 0 2px 24px #4157c711;
+      border: 1.5px solid #e8ebef;
+      display: none; /* Hide until calculated */
+    }
+    .chart-title {
+      color: #4157c7;
+      font-weight: 600;
+      font-size: 1.1em;
+      margin-bottom: 0.4em;
+      margin-left: 0.2em;
+    }
+    .savings-table-container {
+      max-width: 890px;
+      margin: 32px auto 0 auto;
+      overflow-x: auto;
+      background: #fff;
+      padding: 1.2em 1em 2em 1em;
+      border-radius: 14px;
+      box-shadow: 0 2px 16px #4157c711;
+      border: 1.5px solid #e8ebef;
+      display: none; /* Hide until calculated */
+    }
+    table.savings-table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 1em;
+      margin-top: 0.2em;
+    }
+    table.savings-table th, table.savings-table td {
+      border: 1px solid #e5e8ee;
+      padding: 6px 11px;
+      text-align: right;
+    }
+    table.savings-table th {
+      background: #f8fafd;
+      color: #4157c7;
+      font-weight: 600;
+    }
+    table.savings-table td {
+      background: #fff;
+      font-family: "Roboto Mono", "Menlo", monospace;
+    }
+    table.savings-table tr:nth-child(even) td {
+      background: #f5f8fa;
+    }
+    table.savings-table tr:hover td {
+      background: #e7faed;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <main>
+    <div class="form-section">
+      <h1>ERC-20 Pre-initialization<br>ETH Savings Calculator</h1>
+      <div class="subtitle">
+        Savings when pre-initializing at your chosen gwei and transferring at different gas prices.<br>
+        <span style="color:#4157c7">See how savings grow as gas price increases.</span>
+      </div>
+      <form id="gasForm" autocomplete="off">
+        <label for="gasPriceInit">Gas Price for Pre-initialize (gwei):</label>
+        <input type="number" step="0.1" min="0.1" max="100" id="gasPriceInit" value="1" required>
+        
+        <label for="gasPriceNow">Current Gas Price (gwei):</label>
+        <input type="number" step="0.1" min="0.1" id="gasPriceNow" value="50" required>
+        
+        <button type="submit">Calculate</button>
+      </form>
+      <div class="assumptions">
+        <b>Assumptions (gas used):</b><br>
+        - Pre-initialize: <b>20,000</b> gas<br>
+        - Transfer to pre-initialized address: <b>51,000</b> gas<br>
+        - Transfer to non pre-initialized address: <b>66,000</b> gas
+      </div>
+    </div>
+    <div class="results-section">
+      <div class="results" id="results" style="display:none"></div>
+    </div>
+  </main>
+  <div class="chart-container" id="chartContainer">
+    <div class="chart-title" id="chartTitle">
+      <!-- Title updated by JS -->
+    </div>
+    <canvas id="savingsChart" height="320"></canvas>
+  </div>
+  <div class="savings-table-container" id="tableContainer">
+    <div class="chart-title" id="tableTitle" style="margin-bottom:0.5em;"></div>
+    <table class="savings-table" id="savingsTable">
+      <thead>
+        <tr>
+          <th>Gas Price (gwei)</th>
+          <th>Cost: Pre-init + Transfer</th>
+          <th>Cost: Direct Transfer</th>
+          <th>ETH Savings</th>
+          <th>Savings (%)</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+<script>
+const gasInit = 20000;
+const gasPreInitTx = 51000;
+const gasNonInitTx = 66000;
+let savingsChart = null;
+
+function toEth(gas, gwei) {
+  return gas * gwei / 1e9;
+}
+function pct(a, b) {
+  if(b === 0) return "0%";
+  return ((100*(1 - (a/b))).toFixed(2)) + "%";
+}
+function updateResults(gweiInit, gweiNow) {
+  const costInit = toEth(gasInit, gweiInit);
+  const costPreInitTx = toEth(gasPreInitTx, gweiNow);
+  const costNonInitTx = toEth(gasNonInitTx, gweiNow);
+  const totalPreInit = costInit + costPreInitTx;
+  const totalNonInit = costNonInitTx;
+  const pctSave = pct(totalPreInit, totalNonInit);
+  const diffEth = totalNonInit - totalPreInit;
+  const eth = x => parseFloat(x).toFixed(6) + " ETH";
+  const resultsDiv = document.getElementById('results');
+  resultsDiv.style.display = 'flex';
+  resultsDiv.innerHTML = `
+    <div class="card">
+      <b>Pre-initialize</b>
+      <div>Total gas cost to pre-initialize (at <span style="color:#222">${gweiInit} gwei</span>):</div>
+      <div style="font-size:1.15em; font-weight:700; color:#4157c7">${eth(costInit)}</div>
+    </div>
+    <div class="card">
+      <b>Transfer (to pre-initialized address)</b>
+      <div>Total gas cost (at <span style="color:#222">${gweiNow} gwei</span>):</div>
+      <div style="font-size:1.15em; font-weight:700; color:#4157c7">${eth(costPreInitTx)}</div>
+    </div>
+    <div class="card">
+      <b>Transfer (to non pre-initialized address)</b>
+      <div>Total gas cost (at <span style="color:#222">${gweiNow} gwei</span>):</div>
+      <div style="font-size:1.15em; font-weight:700; color:#4157c7">${eth(costNonInitTx)}</div>
+    </div>
+    <div class="card savings-card">
+      <b>Savings if pre-initialized:</b>
+      <div>
+        <span class="savings-value">${eth(diffEth)}</span> saved
+        (<span class="savings-value">${pctSave}</span>)
+      </div>
+      <div style="color:#33875a; margin-top:0.4em; font-size:0.98em;">
+        (Compare total cost of pre-initialize+transfer vs direct transfer to new address)
+      </div>
+    </div>
+  `;
+}
+function updateSavingsChartAndTable(gweiInit) {
+  const minGwei = 1, maxGwei = 100;
+  const xs = [], savings = [], preInitTotals = [], nonInitTotals = [], pctSaves = [];
+  for (let gwei = minGwei; gwei <= maxGwei; gwei++) {
+    const costInit = toEth(gasInit, gweiInit);
+    const costPreInitTx = toEth(gasPreInitTx, gwei);
+    const costNonInitTx = toEth(gasNonInitTx, gwei);
+    const totalPreInit = costInit + costPreInitTx;
+    const totalNonInit = costNonInitTx;
+    xs.push(gwei);
+    preInitTotals.push(totalPreInit);
+    nonInitTotals.push(totalNonInit);
+    const save = totalNonInit - totalPreInit;
+    savings.push(parseFloat(save.toFixed(7)));
+    pctSaves.push(pct(totalPreInit, totalNonInit));
+  }
+  if (savingsChart) savingsChart.destroy();
+  savingsChart = new Chart(document.getElementById('savingsChart').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: xs,
+      datasets: [
+        {
+          label: 'ETH Savings per Tx (pre-initialized @'+gweiInit+' gwei)',
+          data: savings,
+          borderColor: '#21b66f',
+          backgroundColor: '#21b66f24',
+          pointRadius: 0,
+          fill: true,
+          tension: 0.16
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      aspectRatio: 2.5,
+      plugins: {
+        legend: {
+          display: true,
+          labels: {
+            font: { size: 15, family: 'Inter, system-ui, Arial, sans-serif' }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return context.dataset.label + ': ' + context.parsed.y + ' ETH';
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          title: { display: true, text: 'Gas Price for Transfer (gwei)', font: { size: 14 } },
+          ticks: { maxTicksLimit: 10, color: '#555' }
+        },
+        y: {
+          title: { display: true, text: 'ETH Savings', font: { size: 14 } },
+          beginAtZero: true,
+          ticks: { color: '#21b66f' }
+        }
+      }
+    }
+  });
+
+  // Update chart and table titles with the gwei value
+  document.getElementById('chartTitle').innerHTML =
+    `ETH Savings from Pre-initialization (<b>pre-initialized @${gweiInit} gwei</b>)<br>
+      <span style="font-weight:400;color:#777;font-size:0.98em;">
+      (vs. transfer to non pre-initialized address, for each gas price 1-100 gwei)
+      </span>`;
+  document.getElementById('tableTitle').innerHTML =
+    `ETH Savings Table (per gas price, 1-100 gwei, <b>pre-initialized @${gweiInit} gwei</b>)`;
+
+  // Table rendering
+  let rows = "";
+  for (let i = 0; i < xs.length; i++) {
+    rows += `
+      <tr>
+        <td>${xs[i]}</td>
+        <td>${preInitTotals[i].toFixed(7)}</td>
+        <td>${nonInitTotals[i].toFixed(7)}</td>
+        <td style="color:#21b66f;font-weight:bold;">${savings[i].toFixed(7)}</td>
+        <td>${pctSaves[i]}</td>
+      </tr>`;
+  }
+  document.querySelector('#savingsTable tbody').innerHTML = rows;
+}
+
+// Handle page state and UI toggling
+function showChartAndTable(show) {
+  document.getElementById('chartContainer').style.display = show ? "block" : "none";
+  document.getElementById('tableContainer').style.display = show ? "block" : "none";
+  document.getElementById('results').style.display = show ? "flex" : "none";
+}
+
+// Robustly initialize after DOM and Chart.js are ready
+document.addEventListener("DOMContentLoaded", function(){
+  // Hide all until user presses Calculate
+  showChartAndTable(false);
+  document.getElementById('results').style.display = 'none';
+
+  document.getElementById('gasForm').onsubmit = function(e){
+    e.preventDefault();
+    const gweiInit = parseFloat(document.getElementById('gasPriceInit').value);
+    const gweiNow = parseFloat(document.getElementById('gasPriceNow').value);
+    updateSavingsChartAndTable(gweiInit);
+    updateResults(gweiInit, gweiNow);
+    showChartAndTable(true);
+  };
+});
+</script>
+  <footer style="text-align:center; margin-top:40px; font-size:0.95em; color:#888;">
+    <div>
+      Draft EIP Tool by <b>German Maria Abal Bazzano</b> —
+      <a href="https://x.com/ariutokintumi" target="_blank">@ariutokintumi</a> —
+      <a href="https://t.me/llamame" target="_blank">@llamame</a>
+      <br>
+      <span>Created for EIP proposal analysis. Date: 2025-07-17</span>
+    </div>
+  </footer>
+</body>
+</html>
+</html>
