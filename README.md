@@ -63,7 +63,6 @@ tooling/
     ERC-20 Pre-initialization ETH Savings Calculator.html # Interactive savings conceptual calculator (HTML/CSS/JS)
 
 .gitattributes                          # Ensures consistent line endings
-.gitignore                              # Ignore for secrets/build files
 LICENSE                                 # MIT License
 README.md                               # You are here
 ```
