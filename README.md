@@ -75,8 +75,7 @@ README.md                               # You are here
 - **Read the EIP draft:** See [EIP draft](eip/erc20-preinit-eip.md) and [EIP rationale](eip/rationale.md) for the full specification, motivation, and analysis.
 - **Test the contract:** Deploy [ERC20PreinitExample.sol](contracts/ERC20PreinitExample.sol) on any EVM chain (since the contract is not audited yet, just use on testnet).
 - **Check real-world gas savings:** See [Real Testing Gas Results](testing/test_results.txt) for gas profiles of transfers with and without pre-initialization.
-- **Estimate ETH savings:** Try the [conceptual live calculator](https://erc-20-pre-initialization.tiiny.site/) or open the HTML file in [tooling](tooling/ERC-20%20Pre-initialization%20ETH%20Savings%20Calculator.html)
-).
+- **Estimate ETH savings:** Try the [conceptual live calculator](https://erc-20-pre-initialization.tiiny.site/) or open the HTML file in [tooling](tooling/ERC-20%20Pre-initialization%20ETH%20Savings%20Calculator.html)).
 
 ---
 
