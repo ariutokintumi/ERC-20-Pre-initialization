@@ -40,7 +40,7 @@ ERC-20 contracts implementing this EIP **MUST**:
   /// @notice Pre-initialize an address' balance slot with a sentinel value
   /// @param user The address to pre-initialize
   function preInitializeAddress(address user) external;
-```
+  ```
 
 ## Behavior:
 - The function MUST store a unique, contract-wide constant sentinel value in the mapping if and only if the slot is currently empty.
