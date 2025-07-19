@@ -1,24 +1,24 @@
-initializing address:
-limit: 44,221
-ariutokintumi: 0x9703d9cf2f834e71d9b70675e746f7b634c9d1e9
-https://sepolia.etherscan.io/tx/0xedd7b01e1f95fe43246b3cd7fd00d30a28b634593b056cdb3c3cd59b38d47544
-vitalik: 0xd8da6bf26964af9d7eed9e03e53415d37aa96045
-https://sepolia.etherscan.io/tx/0x7cba8066b0a48dcacd8ecbc53b39896a3893d9eb0701b5eb127638a9506ed7bd
+1. Transaction to initialize an address:
+	Used gas: 44,221
+	a. ariutokintumi: 0x9703d9cf2f834e71d9b70675e746f7b634c9d1e9
+	   https://sepolia.etherscan.io/tx/0xedd7b01e1f95fe43246b3cd7fd00d30a28b634593b056cdb3c3cd59b38d47544
+	b. vitalik: 0xd8da6bf26964af9d7eed9e03e53415d37aa96045
+	   https://sepolia.etherscan.io/tx/0x7cba8066b0a48dcacd8ecbc53b39896a3893d9eb0701b5eb127638a9506ed7bd
 
 ------
 
-send to non-initialized address:
-limit: 52,146
-jistro: 0x63c3774531EF83631111Fe2Cf01520Fb3F5A68F7
-https://sepolia.etherscan.io/tx/0x6c518960a47e71ae02b9ca65f13de023131596b6e46220cce1830a5f1d1cca13
-kartik: 0x53C61cfb8128ad59244E8c1D26109252ACe23d14
-https://sepolia.etherscan.io/tx/0x91bcfcac921fb853a40d5c8ca44a93ce8a7eb62eaa08adfb97ef064c47522bf5
+2. Transaction to send tokens to a non-initialized address:
+	Used gas: 52,146
+	a. jistro: 0x63c3774531EF83631111Fe2Cf01520Fb3F5A68F7
+	   https://sepolia.etherscan.io/tx/0x6c518960a47e71ae02b9ca65f13de023131596b6e46220cce1830a5f1d1cca13
+	b. kartik: 0x53C61cfb8128ad59244E8c1D26109252ACe23d14
+	   https://sepolia.etherscan.io/tx/0x91bcfcac921fb853a40d5c8ca44a93ce8a7eb62eaa08adfb97ef064c47522bf5
 
 ------
 
-send to initialized address:
-limit: 35,050
-ariutokintumi: 0x9703d9cf2f834e71d9b70675e746f7b634c9d1e9
-https://sepolia.etherscan.io/tx/0x2de458bdd199a7e965836a93b2d18205f76df820ba09e9e799930d1646141182
-vitalik: 0xd8da6bf26964af9d7eed9e03e53415d37aa96045
-https://sepolia.etherscan.io/tx/0x92c27b312c7e6b0cf06b170e0fb8368690746b542e232d24df233dbe4534b731
+3. Transaction to send tokens to a initialized address:
+	Used gas: 35,050
+	a. ariutokintumi: 0x9703d9cf2f834e71d9b70675e746f7b634c9d1e9
+	   https://sepolia.etherscan.io/tx/0x2de458bdd199a7e965836a93b2d18205f76df820ba09e9e799930d1646141182
+	b. vitalik: 0xd8da6bf26964af9d7eed9e03e53415d37aa96045
+	   https://sepolia.etherscan.io/tx/0x92c27b312c7e6b0cf06b170e0fb8368690746b542e232d24df233dbe4534b731
