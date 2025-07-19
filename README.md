@@ -25,9 +25,9 @@ For full details, see the [EIP draft](eip/erc20-preinit-eip.md).**
 - This allows users or wallets to pay the high storage gas fee at a convenient time, and only pay extra ~5,000 gas cost for their later purchase, regardless of network congestion.
 
 **Test results** ([testing/test_results.txt](testing/test_results.txt)):  
-- Pre-initialization: ~44,000 gas (should be done under low gasPrice circumstances)
-- First transfer to non-initialized: ~52,000 gas  
-- Transfer to pre-initialized: ~35,000 gas.
+- Pre-initialization: 44,221 gas (this is expected to done executed under low gas price circumstances)
+- First transfer to non-initialized: 52,146 gas
+- Transfer to pre-initialized: 35,050 gas
 - *Savings can be >20% ETH depending on gasPrice spike conditions.*
 
 
