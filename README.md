@@ -37,9 +37,9 @@ For full details, see the [EIP draft](eip/erc20-preinit-eip.md).**
 
 ### 🔎 Try the Calculator Online
 
-Estimate savings for any gas price scenario with the conceptual [live calculator](https://erc-20-pre-initialization.tiiny.site/) or run [ERC-20 Pre-initialization ETH Savings Calculator.html](tooling/ERC-20%20Pre-initialization%20ETH%20Savings%20Calculator.html) locally.
+Estimate savings for any gas price scenario with the [conceptual live calculator](https://erc-20-pre-initialization.tiiny.site/) or run [ERC-20 Pre-initialization ETH Savings Calculator.html](tooling/ERC-20%20Pre-initialization%20ETH%20Savings%20Calculator.html) locally.
 
-Note: The calculator doesn't reflect the complete transaction cost, is only taking in consideration the mapping costs of the transaction (a part of it).
+Note: The conceptual calculator doesn't reflect the complete transaction cost, is only considering the mapping costs section of the transaction.
 
 
 ---
