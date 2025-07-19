@@ -58,4 +58,4 @@ This EIP is a safe, optional, and backward-compatible method to enable **predict
 ---
 
 Questions or feedback?  
-See the [live calculator & theory](https://erc-20-pre-initialization.tiiny.site/) or open an issue.
+See the [conceptual live calculator](https://erc-20-pre-initialization.tiiny.site/) to understand the idea better, check the [testing results](../testing/test_results.txt) or open an issue.
