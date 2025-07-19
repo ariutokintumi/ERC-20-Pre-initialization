@@ -19,7 +19,7 @@ This proposal addresses that with a simple, opt-in solution: **pay the "storage 
 
 **Result:**  
 - Users (or wallets, or dApps) can pre-initialize their storage slot when gas is cheap.
-- When network is busy, their first actual token buy/claim/mint/transfer costs ~17,000 less gas (by measurements done and available at [../testing/test_results.txt](../testing/test_results.txt)).
+- When network is busy, their first actual token buy/claim/mint/transfer costs 17,096 less gas (by measurements done and available at [../testing/test_results.txt](../testing/test_results.txt)).
 
 
 ## Detailed Use Cases
