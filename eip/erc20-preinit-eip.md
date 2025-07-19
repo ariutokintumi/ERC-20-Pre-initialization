@@ -8,62 +8,78 @@ status: Draft
 category: ERC
 status: Pre-Draft
 created: 2025-07-17
-updated: 2025-07-17
+updated: 2025-07-18
 requires: ERC-20
 ---
 
 # Simple Summary
 
-Adds an **optional pre-initialization function** to ERC-20, allowing any address to pre-fill its token balance storage slot at a low gas price. This enables users to pay the SSTORE gas cost (20,000 gas) in advance—when gas is cheap—so that later transfers to that address incur a much lower gas cost (5,000) even during congestion.
+This EIP introduces an **optional pre-initialization function** for ERC-20 tokens, leveraging a sentinel (magic) value and a `bytes32` storage mapping for balances. This mechanism allows users to pay the high SSTORE gas cost in advance (when gas is cheap), so that the later first real token transfer to that address costs far less gas during a potential upcoming network congestion.
+
 
 # Abstract
 
-This EIP extends ERC-20 with an optional `preInitializeAddress(address)` function. By calling this function, any address (user or operator) can ensure the storage slot for a token balance is initialized (set to zero), allowing subsequent balance changes to be much cheaper in high-gas scenarios. This mechanism is backward-compatible, safe, and particularly useful for high-demand launches, presales, and trending tokens.
+Pre-initializing an ERC-20 token balance storage slot can save significant gas for users, but a simple approach (writing 0 to a `uint256` balance) does **not** actually reduce costs for the eventual first real transfer at all. This EIP proposes a safe, ERC-20-compatible method using `mapping(address => bytes32)` for balances and a unique sentinel value. The contract's ERC-20 interface remains 100% standard: all reads/writes are still performed as `uint256`. Only the internal pre-initialization function ever stores the sentinel value; all normal functions interpret it as zero, and any later transfer/mint simply overwrites it.
+
+This allows users or integrators to "prepay" storage rent and optimize gas costs for high-demand launches, presales, and trending tokens.
+
 
 # Motivation
 
-Due to Ethereum’s gas cost model, writing to a new storage slot (`SSTORE` from "empty" to nonzero) costs 20,000 gas, while updating an existing slot costs only 5,000 gas. In popular ERC-20 tokens, new buyers often face high gas fees (especially during launches or market spikes) just to initialize their balance. By pre-initializing addresses during periods of low gas prices, users and protocols can optimize for cost and user experience.
+In Ethereum, the **first write to a new storage slot** costs 20,000 gas (SSTORE from zero to nonzero). Pre-initializing by setting zero to the balance mapping does *not* help, since the cost is incurred only when a nonzero value is first written. By using a sentinel (magic) value in a `bytes32` mapping, contracts can explicitly allocate the storage slot for a given address, paying the high gas fee in advance, and later updating the slot with the real balance at only 5,000 gas.
+
+This makes gas costs predictable and manageable for scenarios where a spike in network fees is likely at time of launch, claim, or trending event.
+
 
 # Specification
 
-Add the following **optional function** to any ERC-20 contract:
-
-```solidity
-/// @notice Pre-initialize an address' balance storage slot to 0 if not set.
-/// @param user The address to pre-initialize
-function preInitializeAddress(address user) external;
+ERC-20 contracts implementing this EIP **MUST**:
+- Store balances as `mapping(address => bytes32)`.
+- Provide a public/external function:
+  ```solidity
+  /// @notice Pre-initialize an address' balance slot with a sentinel value
+  /// @param user The address to pre-initialize
+  function preInitializeAddress(address user) external;
 ```
 
 ## Behavior:
+- The function MUST store a unique, contract-wide constant sentinel value in the mapping if and only if the slot is currently empty.
+- The ERC-20 interface (`balanceOf` , etc.) MUST interpret this sentinel value as zero for all logic and external views.
+- Any subsequent mint/transfer to that address MUST overwrite the slot with the correct `uint256` value.
+- No ERC-20 event emission or extra logic is required in `preInitializeAddress`.
 
-- The function MUST set balanceOf[user] = 0 if and only if the slot is not yet initialized.
-- No value transfer or event emission is required.
-- Any address may call this function for any address.
 
 # Use Cases
-
 1. Presale Gas Optimization
-When a new token is about to launch (IDO, presale, airdrop claim, etc.), participants can pre-initialize their address at a time when gas prices are low. Later, when the sale opens (and gas fees spike), buying the token requires much less gas since the expensive storage write was already paid.
-
+Users can pre-initialize their address for a token before a high-traffic trading season (bull run), claim, or airdrop, when network gas is low, so they save gas later during the actual purchase or claim.
 2. Strategic Pre-initialization Before Trends
-If a user expects to buy a trending token (e.g., meme coin or hyped launch), they can pre-initialize their address for that token contract days or hours in advance, minimizing gas even if the network becomes congested at launch.
-
+Traders and power users can batch pre-initialize their addresses on trending or soon-to-launch tokens as a gas-saving strategy.
 3. Power Users & dApps
-Wallets, bots, or aggregators can provide an option to batch pre-initialize target addresses for popular tokens on behalf of users, as a value-added service.
+Wallets, bots, and aggregators can offer “pre-initialize” functionality to users as a service, providing a competitive edge in congested markets.
+
+
+# Justification: Why Use bytes32 + Sentinel?
+-Writing zero to a slot does **not** save gas for the first real (nonzero) balance write. EVM only discounts overwrites of already-allocated slots with nonzero value.
+-A nonzero, non-numeric “magic” value as a sentinel (e.g., `bytes32(keccak256("preinit"))`) can be easily recognized and replaced by the contract on the first real write.
+-The contract logic ensures full ERC-20 compatibility: all reads/writes are interpreted as `uint256` externally; only the internal mapping uses `bytes32`.
+
 
 # Backwards Compatibility
 
-This function is optional and does not modify ERC-20's transfer, approve, or balance logic. Existing tokens remain fully compatible.
+This function and pattern are optional and fully backward compatible: all ERC-20 views, transfers, and approvals remain unchanged in interface and behavior.
+
 
 # Security Considerations
 
-- No risk of funds loss: preInitializeAddress cannot modify nonzero balances or transfer tokens.
-- Potential for "storage bloat" is minimal, as the function only sets a zero value and such behavior is possible already via a transfer(0) call.
-- Best practice: contracts may wish to include a gas check or disable pre-initialization after a certain period.
+- No risk of funds loss: pre-initialization cannot set balances to nonzero token values or affect accounting.
+- The sentinel is never visible or accessible externally. ERC-20 APIs always interpret it as zero.
+- Minimal “storage bloat” risk; a slot with sentinel is no worse than a slot initialized via normal transfers.
+
 
 # Reference Implementation
 
-See [../test-contracts/ERC20PreinitExample.sol](https://github.com/ariutokintumi/ERC-20-Pre-initialization/blob/main/test-contracts/ERC20PreinitExample.sol).
+Check a testing example at [../contracts/ERC20PreinitExample.sol](../contracts/ERC20PreinitExample.sol). Don't use for production until a security audit is performed.
+
 
 # Copyright
 

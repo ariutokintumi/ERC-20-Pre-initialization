@@ -2,17 +2,34 @@
 
 **Author:** German Maria Abal Bazzano  
 **Contact:** [@ariutokintumi on X](https://x.com/ariutokintumi) | [@llamame on Telegram](https://t.me/llamame)  
-**Live Calculator:** [erc-20-pre-initialization.tiiny.site](https://erc-20-pre-initialization.tiiny.site/)
+**Live Conceptual Calculator:** [erc-20-pre-initialization.tiiny.site](https://erc-20-pre-initialization.tiiny.site/)
 
 ---
 
 ## Overview
 
-This repository accompanies an EIP proposing an **optional pre-initialization function for ERC-20 tokens**, enabling users or operators to pay the storage (SSTORE) gas cost for specific addresses in advance, when network fees are low. This can dramatically reduce gas costs during periods of network congestion, improving onboarding and transfer efficiency for high-demand ERC-20 tokens.
+This repository presents an EIP and complete reference implementation for **gas-optimized pre-initialization of ERC-20 balances** using a “sentinel value” technique.  
+The problem: On Ethereum, the *first* storage write for a new address in an ERC-20 (`mapping(address => uint256)`) adds ~20,000 gas cost, making first-time buys expensive in gas spikes.
 
-- **EIP Proposal:** See [`/eip/`](./eip) folder for the draft and rationale.
-- **Tooling & Analysis:** See [`/tooling/`](./tooling) for scripts and the interactive calculator.
-- **Test Contracts:** See [`/test-contracts/`](./test-contracts) for Solidity implementations.
+**This EIP proposes an optional function to pre-initialize addresses using a special sentinel value in a `bytes32` mapping, so users can pay the storage cost in advance (when gas is low).  
+All ERC-20 interfaces remain fully compatible and balances work as normal.  
+For full details, see the [EIP draft](eip/erc20-preinit-eip.md).**
+
+
+---
+
+## The Sentinel (Magic Value) Solution
+- Balances are stored as `mapping(address => bytes32)`.
+- The new function `preInitializeAddress(address user)` writes a contract-wide unique “magic” value to pre-initialize the slot (only if not already set).
+- All normal ERC-20 reads and writes are interpreted as `uint256`. The sentinel is treated as zero for accounting, and is overwritten on first real token transfer or mint.
+- This allows users or wallets to pay the high storage gas fee at a convenient time, and only pay extra ~5,000 gas cost for their later purchase, regardless of network congestion.
+
+**Test results** ([testing/test_results.txt](testing/test_results.txt)):  
+- Pre-initialization: ~44,000 gas (should be done under low gasPrice circumstances)
+- First transfer to non-initialized: ~52,000 gas  
+- Transfer to pre-initialized: ~35,000 gas.
+- *Savings can be >20% ETH depending on gasPrice spike conditions.*
+
 
 ---
 
@@ -20,37 +37,54 @@ This repository accompanies an EIP proposing an **optional pre-initialization fu
 
 ### 🔎 Try the Calculator Online
 
-Test ETH savings with the live web tool:  
-👉 [erc-20-pre-initialization.tiiny.site](https://erc-20-pre-initialization.tiiny.site/)
+Estimate savings for any gas price scenario with the conceptual [live calculator](https://erc-20-pre-initialization.tiiny.site/) or run `/tooling/ERC-20 Pre-initialization ETH Savings Calculator.html` locally.
+
+Note: The calculator doesn't reflect the complete transaction cost, is only taking in consideration the mapping costs of the transaction (a part of it).
+
 
 ---
 
 ## Folder Structure
 
 
-- README.md - Project overview, setup, and table of contents
-- LICENSE - License information
-- .gitattributes - Ensures consistent line endings across all text files in repo
-- eip/
-    - erc20-preinit-eip.md - EIP draft
-    - rationale.md - Extended rationale
-- tooling/
-    - ERC-20 Pre-initialization ETH Savings Calculator.html - Interactive calculator
-    - preinit.py - Python: Address initialization
-    - gas_measurement.py - Python: transfer gas measurement scripts
-- test-contracts/
-    - ERC20PreinitExample.sol - Solidity contract with pre-init logic
+```plaintext
+contracts/
+    ERC20PreinitExample.abi            # ABI for testing/scripts
+    ERC20PreinitExample.sol            # Reference Solidity contract
 
+eip/
+    erc20-preinit-eip.md               # EIP draft/specification
+    rationale.md                       # Extended rationale, theory, and use cases
+
+testing/
+    test_results.txt                   # Real-world gas measurement results
+
+tooling/
+    ERC-20 Pre-initialization ETH Savings Calculator.html # Interactive savings conceptual calculator (HTML/CSS/JS)
+
+.gitattributes                          # Ensures consistent line endings
+.gitignore                              # Ignore for secrets/build files
+LICENSE                                 # MIT License
+README.md                               # You are here
+```
 
 
 ---
 
 ## How to Use
 
-- **Review the EIP draft** in the `/eip/` folder for specification and rationale.
-- **Use the calculator** ([live demo](https://erc-20-pre-initialization.tiiny.site/)) or run locally from `/tooling/`.
-- **Run Python scripts** in `/tooling/` for gas measurement and batch actions (requires Python 3, web3.py, Infura, etc).
-- **Deploy and test contracts** in `/test-contracts/` for benchmarking or integration.
+- **Read the EIP draft:** See [EIP draft](eip/erc20-preinit-eip.md) and [EIP rationale](eip/rationale.md) for the full specification, motivation, and analysis.
+- **Test the contract:** Deploy [ERC20PreinitExample.sol](contracts/ERC20PreinitExample.sol) on any EVM chain (since the contract is not audited yet, just use on testnet).
+- **Check real-world gas savings:** See [Real Testing Gas Results](testing/test_results.txt) for gas profiles of transfers with and without pre-initialization.
+- **Estimate ETH savings:** Try the [conceptual live calculator](https://erc-20-pre-initialization.tiiny.site/) or open the HTML file in [tooling](tooling/ERC-20 Pre-initialization ETH Savings Calculator.html).
+
+---
+
+## Why bytes32 and a sentinel value?
+- Simply writing `0` does not reduce gas for future transfers. Only writing a unique nonzero value ("magic"/sentinel) in a `bytes32` mapping can safely pre-allocate storage for future updates.
+- This trick is invisible to ERC-20 users and does not break compatibility with wallets or dApps.
+
+See [rationale.md](eip/rationale.md) for a detailed explanation.
 
 ---
 
