@@ -59,9 +59,9 @@ Wallets, bots, and aggregators can offer “pre-initialize” functionality to u
 
 
 # Justification: Why Use bytes32 + Sentinel?
--Writing zero to a slot does **not** save gas for the first real (nonzero) balance write. EVM only discounts overwrites of already-allocated slots with nonzero value.
--A nonzero, non-numeric “magic” value as a sentinel (e.g., `bytes32(keccak256("preinit"))`) can be easily recognized and replaced by the contract on the first real write.
--The contract logic ensures full ERC-20 compatibility: all reads/writes are interpreted as `uint256` externally; only the internal mapping uses `bytes32`.
+- Writing zero to a slot does **not** save gas for the first real (nonzero) balance write. EVM only discounts overwrites of already-allocated slots with nonzero value.
+- A nonzero, non-numeric “magic” value as a sentinel (e.g., `bytes32(keccak256("preinit"))`) can be easily recognized and replaced by the contract on the first real write.
+- The contract logic ensures full ERC-20 compatibility: all reads/writes are interpreted as `uint256` externally; only the internal mapping uses `bytes32`.
 
 
 # Backwards Compatibility
