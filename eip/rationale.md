@@ -2,7 +2,7 @@
 
 ## Why This EIP?
 
-Ethereum's storage model makes the **first write to any storage slot (SSTORE)** disproportionately expensive: 20,000 gas versus 5,000 gas for subsequent updates. In traditional ERC-20, pre-initializing a balance slot with zero does NOT actually save gas for the user's first real balance update; only a nonzero value allocates the slot. This EIP introduces a clean workaround: store a unique, non-numeric “magic” value in a bytes32 mapping to act as a sentinel, making the slot "allocated" and thus eligible for cheap update in the next transfer or mint.
+Ethereum's storage model makes the **first write to any storage slot (SSTORE)** disproportionately expensive: ~20,000 gas versus ~5,000 gas for subsequent updates. In traditional ERC-20, pre-initializing a balance slot with zero does NOT actually save gas for the user's first real balance update; only a nonzero value allocates the slot. This EIP introduces a clean workaround: store a unique, non-numeric “magic” value in a bytes32 mapping to act as a sentinel, making the slot "allocated" and thus eligible for cheap update in the next transfer or mint.
 
 **Key insight:**  
 - You cannot “fake” a nonzero balance or use negative values (ERC-20 is uint256-only).
@@ -29,6 +29,22 @@ This proposal addresses that with a simple, opt-in solution: **pay the "storage 
    - Savvy users can batch-initialize slots on tokens they may want to trade when hype spikes.
 3. **Wallet/dApp Automation**
    - Wallets, bots, and advanced dApps can offer a “pre-initialize now” button or automatic service for users to optimize their on-chain costs.
+
+
+## Design Philosophy & Comparison
+
+This EIP shares a core design philosophy with [ERC-721A](https://www.erc721a.org), a widely adopted, optimized NFT standard that allows for cheap batch minting by deferring part of the gas cost to the first transfer of each token. 
+**721A takes a “low gas now, higher gas later” approach:**
+Minting is cheaper for the user, but the first transfer of a token is slightly more expensive as the slot must be fully initialized then.
+
+This proposal flips that paradigm:
+Here, we allow (but do not require) users to pay the “storage rent” up front, when gas is low, making their later transfers (when gas might be high) much cheaper.
+It’s "high gas now, low gas later", the opposite time/gas bet than [ERC-721A](https://www.erc721a.org).
+
+Just as with [ERC-721A](https://www.erc721a.org), neither approach reduces total gas in a flat-fee world.
+Both provide value by letting users/speculators decide when to pay expensive storage, aligning costs with their expectations of network activity and their own needs.
+
+This makes the mechanism not just a technical optimization, but a user-experience and UX timing tool for advanced and power users—mirroring a pattern already accepted in the ERC-721 world.	
 
 
 ## Why Not Use Other Approaches?

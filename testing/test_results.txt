@@ -16,9 +16,17 @@
 
 ------
 
-3. Transaction to send tokens to a initialized address:
+3. Transaction to send tokens to a pre-initialized address:
 	Used gas: 35,050
 	a. ariutokintumi: 0x9703d9cf2f834e71d9b70675e746f7b634c9d1e9
 	   https://sepolia.etherscan.io/tx/0x2de458bdd199a7e965836a93b2d18205f76df820ba09e9e799930d1646141182
 	b. vitalik: 0xd8da6bf26964af9d7eed9e03e53415d37aa96045
 	   https://sepolia.etherscan.io/tx/0x92c27b312c7e6b0cf06b170e0fb8368690746b542e232d24df233dbe4534b731
+
+------
+
+Try the Live Conceptual Calculator at https://erc-20-pre-initialization.tiiny.site/
+
+Author: German Maria Abal Bazzano
+https://x.com/ariutokintumi
+https://t.me/llamame

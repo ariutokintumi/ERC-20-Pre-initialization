@@ -8,7 +8,7 @@ status: Draft
 category: ERC
 status: Pre-Draft
 created: 2025-07-17
-updated: 2025-07-18
+updated: 2025-07-28
 requires: ERC-20
 ---
 
@@ -21,7 +21,7 @@ This EIP introduces an **optional pre-initialization function** for ERC-20 token
 
 Pre-initializing an ERC-20 token balance storage slot can save significant gas for users, but a simple approach (writing 0 to a `uint256` balance) does **not** actually reduce costs for the eventual first real transfer at all. This EIP proposes a safe, ERC-20-compatible method using `mapping(address => bytes32)` for balances and a unique sentinel value. The contract's ERC-20 interface remains 100% standard: all reads/writes are still performed as `uint256`. Only the internal pre-initialization function ever stores the sentinel value; all normal functions interpret it as zero, and any later transfer/mint simply overwrites it.
 
-This allows users or integrators to "prepay" storage rent and optimize gas costs for high-demand launches, presales, and trending tokens.
+This allows users or integrators to "prepay" storage rent and optimize gas costs before high-demand launches, presales, and trending tokens. An easy way to understand for experienced developers is that this mirrors the principle of gas-shifting found in [ERC-721A](https://www.erc721a.org), but applied in reverse for ERC-20 storage.
 
 
 # Motivation
