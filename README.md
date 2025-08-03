@@ -52,7 +52,7 @@ contracts/
     ERC20PreinitExample.abi            # ABI for testing/scripts
     ERC20PreinitExample.sol            # Reference Solidity contract
 
-eip/
+erc/
     erc20-preinit-erc.md               # ERC draft/specification
     rationale.md                       # Extended rationale, theory, and use cases
 
