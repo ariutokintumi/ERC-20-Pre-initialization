@@ -2,7 +2,7 @@
 pragma solidity ^0.8.20;
 
 /// @title ERC20 with bytes32 balance storage and pre-initialization
-/// @title ERC-20 with Pre-initialization (EIP draft) - Author: @ariutokintumi
+/// @title ERC-20 with Pre-initialization (ERC draft) - Author: @ariutokintumi
 
 contract ERC20PreinitBytes32 {
     string public name = "PreinitToken";
