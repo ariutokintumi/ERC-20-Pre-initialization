@@ -28,7 +28,7 @@ For full details, see the [EIP draft](eip/erc20-preinit-eip.md).**
 - Pre-initialization: 44,221 gas (this is expected to done executed under low gas price circumstances)
 - First transfer to non-initialized: 52,146 gas
 - Transfer to pre-initialized: 35,050 gas
-- *Savings can be >20% ETH depending on gasPrice spike conditions.*
+- *Savings can be >30% ETH depending on gasPrice spike conditions.*
 
 
 ---
