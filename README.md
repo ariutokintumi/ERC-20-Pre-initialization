@@ -1,4 +1,4 @@
-# ERC-20 Pre-initialization EIP
+# ERC-20 Pre-initialization
 
 **Author:** German Maria Abal Bazzano  
 **Contact:** [@ariutokintumi on X](https://x.com/ariutokintumi) | [@llamame on Telegram](https://t.me/llamame)  
@@ -8,12 +8,12 @@
 
 ## Overview
 
-This repository presents an EIP and complete reference implementation for **gas-optimized pre-initialization of ERC-20 balances** using a “sentinel value” technique.  
+This repository presents an ERC and complete reference implementation for **gas-optimized pre-initialization of ERC-20 balances** using a “sentinel value” technique.  
 The problem: On Ethereum, the *first* storage write for a new address in an ERC-20 (`mapping(address => uint256)`) adds ~20,000 gas cost, making first-time buys expensive in gas spikes.
 
-**This EIP proposes an optional function to pre-initialize addresses using a special sentinel value in a `bytes32` mapping, so users can pay the storage cost in advance (when gas is low).  
+**This ERC proposes an optional function to pre-initialize addresses using a special sentinel value in a `bytes32` mapping, so users can pay the storage cost in advance (when gas is low).  
 All ERC-20 interfaces remain fully compatible and balances work as normal.  
-For full details, see the [EIP draft](eip/erc20-preinit-eip.md).**
+For full details, see the [ERC draft](erc/erc20-preinit-erc.md).**
 
 
 ---
@@ -53,7 +53,7 @@ contracts/
     ERC20PreinitExample.sol            # Reference Solidity contract
 
 eip/
-    erc20-preinit-eip.md               # EIP draft/specification
+    erc20-preinit-erc.md               # ERC draft/specification
     rationale.md                       # Extended rationale, theory, and use cases
 
 testing/
@@ -72,7 +72,7 @@ README.md                               # You are here
 
 ## How to Use
 
-- **Read the EIP draft:** See [EIP draft](eip/erc20-preinit-eip.md) and [EIP rationale](eip/rationale.md) for the full specification, motivation, and analysis.
+- **Read the ERC draft:** See [ERC draft](erc/erc20-preinit-erc.md) and [ERC rationale](erc/rationale.md) for the full specification, motivation, and analysis.
 - **Test the contract:** Deploy [ERC20PreinitExample.sol](contracts/ERC20PreinitExample.sol) on any EVM chain (since the contract is not audited yet, just use on testnet).
 - **Check real-world gas savings:** See [Real Testing Gas Results](testing/test_results.txt) for gas profiles of transfers with and without pre-initialization.
 - **Estimate ETH savings:** Try the [conceptual live calculator](https://erc-20-pre-initialization.tiiny.site/) or open the HTML file in [tooling](tooling/ERC-20%20Pre-initialization%20ETH%20Savings%20Calculator.html)).
@@ -83,7 +83,7 @@ README.md                               # You are here
 - Simply writing `0` does not reduce gas for future transfers. Only writing a unique nonzero value ("magic"/sentinel) in a `bytes32` mapping can safely pre-allocate storage for future updates.
 - This trick is invisible to ERC-20 users and does not break compatibility with wallets or dApps.
 
-See [rationale.md](eip/rationale.md) for a detailed explanation.
+See [rationale.md](erc/rationale.md) for a detailed explanation.
 
 ---
 
