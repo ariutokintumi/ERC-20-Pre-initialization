@@ -3,6 +3,7 @@
 **Author:** German Maria Abal Bazzano  
 **Contact:** [@ariutokintumi on X](https://x.com/ariutokintumi) | [@llamame on Telegram](https://t.me/llamame)  
 **Live Conceptual Calculator:** [erc-20-pre-initialization.tiiny.site](https://erc-20-pre-initialization.tiiny.site/)
+**Discussion:** [Ethereum Magicians Post](https://ethereum-magicians.org/t/erc-tbd-erc-20-pre-initialization-function-gas-savings-for-first-time-token-receivers/24993)
 
 ---
 
@@ -101,4 +102,4 @@ MIT
 
 ---
 
-*For discussion, suggestions, or contributions, please open an issue or contact the author above.*
+*For discussion, suggestions, or contributions, please reply in the [Ethereum Magicians Post](https://ethereum-magicians.org/t/erc-tbd-erc-20-pre-initialization-function-gas-savings-for-first-time-token-receivers/24993).

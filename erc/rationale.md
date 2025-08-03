@@ -74,4 +74,4 @@ This ERC is a safe, optional, and backward-compatible method to enable **predict
 ---
 
 Questions or feedback?  
-See the [conceptual live calculator](https://erc-20-pre-initialization.tiiny.site/) to understand the idea better, check the [testing results](../testing/test_results.txt) or open an issue.
+See the [conceptual live calculator](https://erc-20-pre-initialization.tiiny.site/) to understand the idea better, check the [testing results](../testing/test_results.txt) or reply at the [Ethereum Magicians Post](https://ethereum-magicians.org/t/erc-tbd-erc-20-pre-initialization-function-gas-savings-for-first-time-token-receivers/24993).

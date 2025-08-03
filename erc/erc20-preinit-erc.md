@@ -2,13 +2,13 @@
 erc: 
 title: ERC-20 Pre-initialization Function for Gas Savings
 author: German Maria Abal Bazzano (@ariutokintumi)
-discussions-to: https://github.com/ariutokintumi/ERC-20-Pre-initialization
+discussions-to: https://ethereum-magicians.org/t/erc-tbd-erc-20-pre-initialization-function-gas-savings-for-first-time-token-receivers/24993
 type: Standards Track
 status: Draft
 category: ERC
 status: Pre-Draft
 created: 2025-07-17
-updated: 2025-07-28
+updated: 2025-08-02
 requires: ERC-20
 ---
 
