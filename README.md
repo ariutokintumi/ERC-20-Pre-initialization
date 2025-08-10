@@ -53,6 +53,9 @@ contracts/
     ERC20PreinitExample.abi            # ABI for testing/scripts
     ERC20PreinitExample.sol            # Reference Solidity contract
 
+eip-for-ethereum/
+    eip-erc20-preinit-sentinel-storage.md # ERC-20 extension draft to PR in ethereum/EIPs repo
+
 erc/
     erc20-preinit-erc.md               # ERC-20 extension draft/specification
     rationale.md                       # Extended rationale, theory, and use cases
