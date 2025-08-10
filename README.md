@@ -1,18 +1,18 @@
-# ERC-20 Pre-initialization
+# ERC-20 Pre-initialization Extension
 
 **Author:** German Maria Abal Bazzano  
 **Contact:** [@ariutokintumi on X](https://x.com/ariutokintumi) | [@llamame on Telegram](https://t.me/llamame)  
 **Live Conceptual Calculator:** [erc-20-pre-initialization.tiiny.site](https://erc-20-pre-initialization.tiiny.site/)  
-**Discussion:** [Ethereum Magicians Post](https://ethereum-magicians.org/t/erc-tbd-erc-20-pre-initialization-function-gas-savings-for-first-time-token-receivers/24993)
+**Discussion:** [Ethereum Magicians Post](https://ethereum-magicians.org/t/erc-tbd-erc-20-pre-initialization-extension-sentinel-storage-gas-savings-for-first-time-token-receivers/24993)
 
 ---
 
 ## Overview
 
-This repository presents an ERC and complete reference implementation for **gas-optimized pre-initialization of ERC-20 balances** using a “sentinel value” technique.  
+This repository presents a new ERC-20 extension and complete reference implementation for **gas-optimized pre-initialization of ERC-20 balances** using a “sentinel value” technique.  
 The problem: On Ethereum, the *first* storage write for a new address in an ERC-20 (`mapping(address => uint256)`) adds ~20,000 gas cost, making first-time buys expensive in gas spikes.
 
-**This ERC proposes an optional function to pre-initialize addresses using a special sentinel value in a `bytes32` mapping, so users can pay the storage cost in advance (when gas is low).  
+**This ERC-20 extension proposes an optional function to pre-initialize addresses using a special sentinel value in a `bytes32` mapping, so users can pay the storage cost in advance (when gas is low).  
 All ERC-20 interfaces remain fully compatible and balances work as normal.  
 For full details, see the [ERC draft](erc/erc20-preinit-erc.md).**
 
@@ -54,7 +54,7 @@ contracts/
     ERC20PreinitExample.sol            # Reference Solidity contract
 
 erc/
-    erc20-preinit-erc.md               # ERC draft/specification
+    erc20-preinit-erc.md               # ERC-20 extension draft/specification
     rationale.md                       # Extended rationale, theory, and use cases
 
 testing/
@@ -73,7 +73,7 @@ README.md                               # You are here
 
 ## How to Use
 
-- **Read the ERC draft:** See [ERC draft](erc/erc20-preinit-erc.md) and [ERC rationale](erc/rationale.md) for the full specification, motivation, and analysis.
+- **Read the ERC-20 extension draft:** See [ERC-20 extension draft](erc/erc20-preinit-erc.md) and [ERC rationale](erc/rationale.md) for the full specification, motivation, and analysis.
 - **Test the contract:** Deploy [ERC20PreinitExample.sol](contracts/ERC20PreinitExample.sol) on any EVM chain (since the contract is not audited yet, just use on testnet).
 - **Check real-world gas savings:** See [Real Testing Gas Results](testing/test_results.txt) for gas profiles of transfers with and without pre-initialization.
 - **Estimate ETH savings:** Try the [conceptual live calculator](https://erc-20-pre-initialization.tiiny.site/) or open the HTML file in [tooling](tooling/ERC-20%20Pre-initialization%20ETH%20Savings%20Calculator.html)).

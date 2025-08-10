@@ -1,8 +1,8 @@
-# Rationale: ERC-20 Pre-initialization Function with Sentinel Value
+# Rationale: ERC‑20 Pre‑initialization Extension (Sentinel Storage)
 
-## Why This ERC?
+## Why This Extension?
 
-Ethereum's storage model makes the **first write to any storage slot (SSTORE)** disproportionately expensive: ~20,000 gas versus ~5,000 gas for subsequent updates. In traditional ERC-20, pre-initializing a balance slot with zero does NOT actually save gas for the user's first real balance update; only a nonzero value allocates the slot. This ERC introduces a clean workaround: store a unique, non-numeric “magic” value in a bytes32 mapping to act as a sentinel, making the slot "allocated" and thus eligible for cheap update in the next transfer or mint.
+Ethereum's storage model makes the **first write to any storage slot (SSTORE)** disproportionately expensive: ~20,000 gas versus ~5,000 gas for subsequent updates. In traditional ERC-20, pre-initializing a balance slot with zero does NOT actually save gas for the user's first real balance update; only a nonzero value allocates the slot. This extension introduces a clean workaround: store a unique, non-numeric “magic” value in a bytes32 mapping to act as a sentinel, making the slot "allocated" and thus eligible for cheap update in the next transfer or mint.
 
 **Key insight:**  
 - You cannot “fake” a nonzero balance or use negative values (ERC-20 is uint256-only).
@@ -33,7 +33,7 @@ This proposal addresses that with a simple, opt-in solution: **pay the "storage 
 
 ## Design Philosophy & Comparison
 
-This ERC shares a core design philosophy with [ERC-721A](https://www.erc721a.org), a widely adopted, optimized NFT standard that allows for cheap batch minting by deferring part of the gas cost to the first transfer of each token. 
+This extension shares a core design philosophy with [ERC-721A](https://www.erc721a.org), a widely adopted, optimized NFT standard that allows for cheap batch minting by deferring part of the gas cost to the first transfer of each token. 
 **721A takes a “low gas now, higher gas later” approach:**
 Minting is cheaper for the user, but the first transfer of a token is slightly more expensive as the slot must be fully initialized then.
 
@@ -63,15 +63,15 @@ This mechanism could be generalized for any mapping that suffers high initial SS
 ## Risks and Limitations
 - Slightly more complex contract logic (all reads must check for the sentinel).
 - “Storage bloat” possible, but no worse than any other pre-initialization or airdrop.
-- This approach is opt-in; only new contracts using this ERC can benefit.
+- This approach is opt-in; only new contracts using this extension can benefit.
 
 
 ## Conclusion
 
-This ERC is a safe, optional, and backward-compatible method to enable **predictable gas costs** for first-time token holders, especially during high-demand events, while preserving ERC-20 compatibility and preventing any accounting “mess” for token projects.
+This extension is a safe, optional, and backward-compatible method to enable **predictable gas costs** for first-time token holders, especially during high-demand events, while preserving ERC-20 compatibility and preventing any accounting “mess” for token projects.
 
 
 ---
 
 Questions or feedback?  
-See the [conceptual live calculator](https://erc-20-pre-initialization.tiiny.site/) to understand the idea better, check the [testing results](../testing/test_results.txt) or reply at the [Ethereum Magicians Post](https://ethereum-magicians.org/t/erc-tbd-erc-20-pre-initialization-function-gas-savings-for-first-time-token-receivers/24993).
+See the [conceptual live calculator](https://erc-20-pre-initialization.tiiny.site/) to understand the idea better, check the [testing results](../testing/test_results.txt) or reply at the [Ethereum Magicians Post](https://ethereum-magicians.org/t/erc-tbd-erc-20-pre-initialization-extension-sentinel-storage-gas-savings-for-first-time-token-receivers/24993).
