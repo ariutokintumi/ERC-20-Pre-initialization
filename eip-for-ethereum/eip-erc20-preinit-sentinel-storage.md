@@ -80,7 +80,7 @@ This proposal addresses that with a simple, opt-in solution: **pay the "storage 
 
 **Result:**  
 - Users (or wallets, or dApps) can pre-initialize their storage slot when gas is cheap.
-- When network is busy, their first actual token buy/claim/mint/transfer costs 17,096 less gas (by measurements done and available at [../testing/test_results.txt](../testing/test_results.txt)).
+- When network is busy, their first actual token buy/claim/mint/transfer costs 17,096 less gas (by measurements done and available at [https://github.com/ariutokintumi/ERC-20-Pre-initialization/blob/main/testing/test_results.txt](https://github.com/ariutokintumi/ERC-20-Pre-initialization/blob/main/testing/test_results.txt)).
 
 
 ### Justification: Why Use bytes32 + Sentinel?
