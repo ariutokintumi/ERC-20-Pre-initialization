@@ -1,20 +1,20 @@
-# ERC-20 Pre-initialization Extension
+# ERC-8003: ERC-20 Pre-initialization Extension
 
 **Author:** German Maria Abal Bazzano  
 **Contact:** [@ariutokintumi on X](https://x.com/ariutokintumi) | [@llamame on Telegram](https://t.me/llamame)  
-**Live Conceptual Calculator:** [erc-20-pre-initialization.tiiny.site](https://erc-20-pre-initialization.tiiny.site/)  
+**Live Conceptual Calculator:** [ERC-8003-erc-20-pre-initialization.tiiny.site](https://erc-20-pre-initialization.tiiny.site/)  
 **Discussion:** [Ethereum Magicians Post](https://ethereum-magicians.org/t/erc-tbd-erc-20-pre-initialization-extension-sentinel-storage-gas-savings-for-first-time-token-receivers/24993)
 
 ---
 
 ## Overview
 
-This repository presents a new ERC-20 extension and complete reference implementation for **gas-optimized pre-initialization of ERC-20 balances** using a “sentinel value” technique.  
+This repository presents the ERC-8003, a new ERC-20 extension and complete reference implementation for **gas-optimized pre-initialization of ERC-20 balances** using a “sentinel value” technique.  
 The problem: On Ethereum, the *first* storage write for a new address in an ERC-20 (`mapping(address => uint256)`) adds ~20,000 gas cost, making first-time buys expensive in gas spikes.
 
 **This ERC-20 extension proposes an optional function to pre-initialize addresses using a special sentinel value in a `bytes32` mapping, so users can pay the storage cost in advance (when gas is low).  
 All ERC-20 interfaces remain fully compatible and balances work as normal.  
-For full details, see the [ERC draft](erc/erc20-preinit-erc.md).**
+For full details, see the [ERC-8003 draft](erc/erc20-preinit-erc.md).**
 
 
 ---
